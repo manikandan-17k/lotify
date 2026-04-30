@@ -47,7 +47,7 @@ lotify/
 ### 1️⃣ Clone the repository
 
 ```bash
-git clone https://github.com/your-username/lotify.git
+git clone https://github.com/MANIKANDAN-17K/lotify.git
 cd lotify/frontend
 ```
 
