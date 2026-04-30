@@ -65,18 +65,7 @@ npm run dev
 
 👉 Open: `http://localhost:5173` (or shown port)
 
----
 
-## 📸 Screenshots
-
-*Add your UI screenshots here*
-
-```
-/screenshots/home.png
-/screenshots/player.png
-```
-
----
 
 ## 🎯 Future Enhancements
 
