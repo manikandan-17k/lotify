@@ -1,36 +1,131 @@
-import song from "../model/song.model.js";
-import db from "../lib/db.js";
-import album from "../model/album.model.js";
-export const createSong = async (req, res) => {
-    try{
-        if(!req.files || !req.files.coverImage || !req.files.audioFile) {   
-            return res.status(400).json({ message: "Bad Request - Missing required fields" });
-    }
-    const{title,artist,albumId,duration} = req.body;
-    const coverImage = req.files.coverImage;
-    const audioFile = req.files.audioFile;
+import { db } from "../lib/db.js";
+import cloudinary from "../lib/cloudinary.js";
 
-    const song = new song({
-        title,
-        artist,
-        audiourl,
-        imageurl,
-        duration,
-        albumId : albumId || null, 
+// ☁️ Upload helper
+const uploadToCloudinary = async (file) => {
+  try {
+    const result = await cloudinary.uploader.upload(file.tempFilePath, {
+      resource_type: "auto",
     });
-    await song.save();
-  // if song belongs to an album, link it using foreign key
-    if (albumId) {
-        const { error } = await db
-            .from("songs")
-            .update({ album_id: albumId })   // 👈 link song to album
-            .eq("id", song.id);
+    return result.secure_url;
+  } catch (error) {
+    console.log("Cloudinary error:", error);
+    throw new Error("Upload failed");
+  }
+};
 
-        if (error) throw error;
-    } 
-    res.status(201).json({ message: "Song created successfully", song });
-    }catch(error) {
-        console.error("Error creating song:", error);
-        res.status(500).json({ message: "Internal Server Error" });
+
+
+// 🎧 CREATE SONG
+export const createSong = async (req, res, next) => {
+  try {
+    if (!req.files || !req.files.audioFile || !req.files.imageFile) {
+      return res.status(400).json({ message: "Please upload all files" });
     }
-}
+
+    const { title, artist, albumId, duration } = req.body;
+
+    const audioUrl = await uploadToCloudinary(req.files.audioFile);
+    const imageUrl = await uploadToCloudinary(req.files.imageFile);
+
+    const { data, error } = await db
+      .from("songs")
+      .insert([
+        {
+          title,
+          artist,
+          audio_url: audioUrl,
+          image_url: imageUrl,
+          duration,
+          album_id: albumId || null,
+        },
+      ])
+      .select();
+
+    if (error) throw error;
+
+    res.status(201).json(data[0]);
+  } catch (error) {
+    console.log("Error in createSong:", error.message);
+    next(error);
+  }
+};
+
+
+
+// ❌ DELETE SONG
+export const deleteSong = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const { error } = await db
+      .from("songs")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    res.status(200).json({ message: "Song deleted successfully" });
+  } catch (error) {
+    console.log("Error in deleteSong:", error.message);
+    next(error);
+  }
+};
+
+
+
+// 📀 CREATE ALBUM
+export const createAlbum = async (req, res, next) => {
+  try {
+    const { title, artist, releaseYear } = req.body;
+
+    const imageUrl = await uploadToCloudinary(req.files.imageFile);
+
+    const { data, error } = await db
+      .from("albums")
+      .insert([
+        {
+          title,
+          artist,
+          image_url: imageUrl,
+          release_year: releaseYear,
+        },
+      ])
+      .select();
+
+    if (error) throw error;
+
+    res.status(201).json(data[0]);
+  } catch (error) {
+    console.log("Error in createAlbum:", error.message);
+    next(error);
+  }
+};
+
+
+
+// 🗑️ DELETE ALBUM
+export const deleteAlbum = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const { error } = await db
+      .from("albums")
+      .delete()
+      .eq("id", id);
+
+    if (error) throw error;
+
+    res.status(200).json({ message: "Album deleted successfully" });
+  } catch (error) {
+    console.log("Error in deleteAlbum:", error.message);
+    next(error);
+  }
+};
+
+
+
+// ✅ ADMIN CHECK
+export const checkAdmin = async (req, res) => {
+  res.status(200).json({ admin: true });
+};
