@@ -8,7 +8,7 @@ import authRoutes from './route/auth.route.js';
 import adminRoutes from './route/admin.route.js';
 import songRoutes from './route/songs.route.js';
 import albumRoutes from './route/albums.route.js';
-import statsRoutes from './route/stats.route.js';
+import statsRoutes from './route/stat.route.js';
 import { testDB } from "./lib/db.js";
 dotenv.config();
 const PORT = process.env.PORT;
