@@ -2,35 +2,32 @@ import { useSignIn } from '@clerk/react';
 import { Button } from "./ui/button";
 
 const SignInOAuthButtons = () => {
-	console.log("Rendering SignInOAuthButtons");
-	const { signIn } = useSignIn();
-	const signInWithGoogle = async () => {
-		if (!signIn) {
-			console.log("SignIn not ready yet");
-			return;
-		}
+  const { signIn, fetchStatus } = useSignIn();
 
-		try {
-			await signIn.sso({
-			strategy: "oauth_google",
-			redirectUrl: "/sso-callback",
-			redirectCallbackUrl: "/auth-callback",
-			});
-		} catch (err) {
-			console.error("OAuth error:", err);
-		}
-		};
+  const signInWithGoogle = async () => {
+    if (fetchStatus === 'fetching') return; // prevent double clicks
 
-	return (
-		<Button
-			onClick={async()=>{alert("Signing in with Google..."); await signInWithGoogle;}}
-			variant="secondary"
-			className="w-full h-11 flex items-center justify-center gap-2 
-						text-white border border-zinc-200"
-			>
-			<span>Continue with Google</span>
-			</Button>
-		); 
+    const { error } = await signIn.sso({
+      strategy: "oauth_google",
+      redirectUrl: "/sso-callback",
+      redirectCallbackUrl: "/auth-callback",
+    });
 
+    if (error) {
+      console.error(error);
+    }
+  };
+
+  return (
+    <Button
+      onClick={() => {alert("Signing in with Google..."); signInWithGoogle;}}
+      disabled={fetchStatus === 'fetching'}
+      variant={"secondary"}
+      className='w-full text-white border-zinc-200 h-11'
+    >
+      {fetchStatus === 'fetching' ? 'Redirecting...' : 'Continue with Google'}
+    </Button>
+  );
 };
+
 export default SignInOAuthButtons;
