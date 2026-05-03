@@ -1,9 +1,47 @@
+import { Card, CardContent } from "@/components/ui/card"
+import { Loader } from "lucide-react"
+import { useUser } from "@clerk/react";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useRef } from "react";
+import  api  from "@/lib/axios";
+
 const AuthCallbackPage = () => {
+        const { isLoaded, user } = useUser();
+        const navigate = useNavigate();
+        const syncAttempted = useRef(false);
+
+        useEffect(() => {
+          const syncUser = async () => {
+            if (!isLoaded || !user || syncAttempted.current) return;
+
+            try {
+              syncAttempted.current = true;
+
+              await api.post("/auth/callback", {
+                id: user.id,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                imageUrl: user.imageUrl,
+              });
+            } catch (error) {
+              console.log("Error in auth callback", error);
+            } finally {
+              navigate("/");
+            }
+          };
+
+          syncUser();
+        }, [isLoaded, user, navigate]);
   return (
-    <div>
-      <h1>Auth Callback Page</h1>
-      <p>This page will handle the authentication callback from Clerk.</p>
-    </div>
+    <div className='h-screen w-full bg-black flex items-center justify-center'>
+    <Card className='w-[90%] max-w-md bg-zinc-900 border-zinc-800'>
+				<CardContent className='flex flex-col items-center gap-4 pt-6'>
+					<Loader className='size-6 text-emerald-400 animate-spin' />
+					<h3 className='text-blue-400 text-xl font-bold'>Logging you in</h3>
+					<p className='text-blue-500 text-sm'>Redirecting...</p>
+				</CardContent>
+			</Card>
+      </div>
   )
 }
 

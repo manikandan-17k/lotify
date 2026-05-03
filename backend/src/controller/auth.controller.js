@@ -3,8 +3,8 @@ import { createUser } from "../models/user.model.js";
 
 export const authCallback = async (req, res, next) => {
   try {
+    console.log("🔥 Incoming request body:", req.body); // test
     const { id, firstName, lastName, imageUrl } = req.body;
-
     // 🔍 check if user exists
     const { data: existingUser, error: findError } = await db
       .from("users")

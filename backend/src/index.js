@@ -10,10 +10,16 @@ import songRoutes from './route/songs.route.js';
 import albumRoutes from './route/albums.route.js';
 import statsRoutes from './route/stat.route.js';
 import { testDB } from "./lib/db.js";
+import cors from 'cors';
 dotenv.config();
 const PORT = process.env.PORT;
 const app = express();
 const __dirname = path.resolve();
+app.use(cors(
+    {origin:"http://localhost:5173",
+        Credentials:true
+    }
+));
 // Apply `clerkMiddleware()` to all routes
 app.use(clerkMiddleware())
 app.use(express.json());

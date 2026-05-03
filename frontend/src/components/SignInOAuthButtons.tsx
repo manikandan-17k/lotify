@@ -1,19 +1,36 @@
-import { useSignIn } from "@clerk/clerk-react";
+import { useSignIn } from '@clerk/react';
 import { Button } from "./ui/button";
 
 const SignInOAuthButtons = () => {
-    const {signIn,isLoaded} = useSignIn();
-    if(!isLoaded) return null;
-    const signInWithGoogle = () => {
-		signIn.authenticateWithRedirect({
+	console.log("Rendering SignInOAuthButtons");
+	const { signIn } = useSignIn();
+	const signInWithGoogle = async () => {
+		if (!signIn) {
+			console.log("SignIn not ready yet");
+			return;
+		}
+
+		try {
+			await signIn.sso({
 			strategy: "oauth_google",
 			redirectUrl: "/sso-callback",
-			redirectUrlComplete: "/auth-callback",
-		});
-	};
-    return<Button onClick={signInWithGoogle} variant={"secondary"} className='w-full text-white border-zinc-200 h-11'>
-			<img src='/google.png' alt='Google' className='size-5' />
-			Continue with Google
-		</Button>
+			redirectCallbackUrl: "/auth-callback",
+			});
+		} catch (err) {
+			console.error("OAuth error:", err);
+		}
+		};
+
+	return (
+		<Button
+			onClick={async()=>{alert("Signing in with Google..."); await signInWithGoogle;}}
+			variant="secondary"
+			className="w-full h-11 flex items-center justify-center gap-2 
+						text-white border border-zinc-200"
+			>
+			<span>Continue with Google</span>
+			</Button>
+		); 
+
 };
 export default SignInOAuthButtons;

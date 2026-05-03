@@ -1,6 +1,7 @@
 import { getToken, useAuth } from '@clerk/react'
 import { useEffect, useState } from 'react';
 import api from '../lib/axios';
+import { Loader } from 'lucide-react';
 const updateApiToken = async (token:string | null) => {
     if(token){
         api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -26,14 +27,11 @@ const AuthProvider = ({children}: {children: React.ReactNode}) => {
     initAuth();
     }, [getToken]);
     if(loading) {
-        return <div className='flex items-center justify-center h-screen w-full'>
-            <div className="flex items-end gap-1 h-10">
-                    <div className="w-1 bg-red-500 animate-[bounce_1s_infinite] h-2"></div>
-                    <div className="w-1 bg-red-500 animate-[bounce_1s_infinite_0.2s] h-4"></div>
-                    <div className="w-1 bg-red-500 animate-[bounce_1s_infinite_0.4s] h-3"></div>
-                    <div className="w-1 bg-red-500 animate-[bounce_1s_infinite_0.6s] h-2"></div>
-            </div>
-        </div>
+        return (
+        <div className='h-screen w-full flex items-center justify-center'>
+				<Loader className='size-8 text-emerald-500 animate-spin' />
+		</div>
+    );
     }
   return <div>{children}</div>
 }
