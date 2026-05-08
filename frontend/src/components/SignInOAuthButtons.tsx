@@ -1,31 +1,27 @@
-import { useSignIn } from '@clerk/react';
+import { useSignIn } from "@clerk/clerk-react";
 import { Button } from "./ui/button";
 
 const SignInOAuthButtons = () => {
-  const { signIn, fetchStatus } = useSignIn();
+  const { signIn, isLoaded } = useSignIn();
 
   const signInWithGoogle = async () => {
-    if (fetchStatus === 'fetching') return; // prevent double clicks
+    if (!isLoaded) return;
 
-    const { error } = await signIn.sso({
+    await signIn.authenticateWithRedirect({
       strategy: "oauth_google",
       redirectUrl: "/sso-callback",
-      redirectCallbackUrl: "/auth-callback",
+      redirectUrlComplete: "/auth-callback",
     });
-
-    if (error) {
-      console.error(error);
-    }
   };
 
   return (
     <Button
-      onClick={() => {alert("Signing in with Google..."); signInWithGoogle;}}
-      disabled={fetchStatus === 'fetching'}
-      variant={"secondary"}
-      className='w-full text-white border-zinc-200 h-11'
+      onClick={signInWithGoogle}
+      disabled={!isLoaded}
+      variant="secondary"
+      className="w-full text-white border-zinc-200 h-11"
     >
-      {fetchStatus === 'fetching' ? 'Redirecting...' : 'Continue with Google'}
+      {!isLoaded ? "Loading..." : "Continue with Google"}
     </Button>
   );
 };
