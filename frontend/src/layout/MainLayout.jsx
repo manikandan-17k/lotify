@@ -4,12 +4,11 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import LeftSideBar from "./components/LeftSideBar";
 
 const MainLayout = () => {
   return (
     <div className="h-screen bg-black text-white overflow-hidden flex flex-col">
-      
-
       {/* PANELS - takes remaining height */}
       <div className="flex-1 min-h-0">
         <ResizablePanelGroup
@@ -24,12 +23,11 @@ const MainLayout = () => {
             collapsible
             collapsedSize={0}
           >
-            <div className="h-full p-4 border-r border-zinc-800 overflow-y-auto">
-              <h1 className="text-2xl font-bold">Left Sidebar</h1>
-            </div>
+          <LeftSideBar/>                   
+
           </ResizablePanel>
 
-          <ResizableHandle withHandle />
+          <ResizableHandle className="w-2 bg-black rounded-lg transition-colors hover:bg-zinc-600" />
 
           {/* CENTER */}
           <ResizablePanel defaultSize={60}>
@@ -38,7 +36,7 @@ const MainLayout = () => {
             </div>
           </ResizablePanel>
 
-          <ResizableHandle withHandle />
+          <ResizableHandle className="w-2 bg-black rounded-lg transition-colors hover:bg-zinc-600" />
 
           {/* RIGHT SIDEBAR */}
           <ResizablePanel
