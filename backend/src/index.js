@@ -17,7 +17,7 @@ const app = express();
 const __dirname = path.resolve();
 app.use(cors(
     {origin:"http://localhost:5173",
-        Credentials:true
+        credentials:true
     }
 ));
 // Apply `clerkMiddleware()` to all routes

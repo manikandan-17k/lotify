@@ -1,12 +1,19 @@
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { SignedIn } from "@clerk/clerk-react";
-import { HomeIcon, Library, LibraryIcon, MessageCircleIcon } from "lucide-react";
+import { HomeIcon, Library, MessageCircleIcon } from "lucide-react";
 import { Link } from "react-router-dom";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import PlaylistSkeleton from "@/components/skeleton/PlaylistSkeleton";
+import { useMusicStore } from "@/stores/useMusicStore";
+import { useEffect } from "react";
 const LeftSideBar = () => {
-    const isLoading = true; // Placeholder for loading state
+  const {albums,isLoading,fetchAlbums} = useMusicStore();
+  useEffect(() => {fetchAlbums();
+  },[fetchAlbums]);
+  console.log("isLoading:", isLoading);
+console.log("albums:", albums);
+
   return (
     <div className="h-full flex flex-col gap-2">
         <div className="rounded-lg bg-zinc-900 p-4">
@@ -42,7 +49,19 @@ const LeftSideBar = () => {
             <ScrollArea className="h-[calc(100vh-300px)]">
                 <div className="space-y-2">
                     {/* Placeholder for dynamic content */}
-                    {isLoading ? <PlaylistSkeleton />: "No playlists found."}
+                    {isLoading ? <PlaylistSkeleton />: (
+                        albums.map((album) => (
+                            <Link to={`/albums/${album.id}`} key={album.id}
+                            className="p-2 rounded-md hover:bg-zinc-800 flex items-center gap-3 group cursor-pointer">
+                                <img src={album.image_url} 
+                                className="size-12 rounded-md flex-shrink-0 object-cover" />
+                                <div className="flex-1 min-w-0 hidden md:block">
+                                    <p className=" font-medium truncate">{album.title}</p>
+                                    <p className="text-xs text-gray-400 truncate">album • {album.artist}</p>
+                                </div>
+                            </Link>
+                        ))
+                    )}
                 </div>
             </ScrollArea>
         </div>

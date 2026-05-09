@@ -140,11 +140,9 @@
   const seedSongs = async () => {
     try {
       // optional: clear existing songs
-      await supabase.from("songs").delete().neq("id", 0);
-
-      // insert songs
+            // insert songs
       const { data, error } = await supabase
-        .from("songs")
+        .from("albums")
         .insert(songs);
 
       if (error) {
