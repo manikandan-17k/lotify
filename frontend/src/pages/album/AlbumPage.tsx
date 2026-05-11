@@ -16,11 +16,7 @@ const AlbumPage = () => {
 	const { albumId } = useParams();
 	const { currentAlbum, fetchAlbumById, isLoading } = useMusicStore();
 
-	if (currentAlbum) {
-		console.log("currentAlbum:", currentAlbum);
-		console.log("songs:", currentAlbum.songs);
-	}
-
+	
 	useEffect(() => {
 		if (albumId) {
 			fetchAlbumById(Number(albumId));
@@ -30,8 +26,8 @@ const AlbumPage = () => {
 	if (isLoading) return null;
 
 	return (
-		<div className="h-full">
-			<ScrollArea className="h-full">
+		<div className="h-full ">
+			<ScrollArea className="h-full rounded-md">
 				<div className="relative min-h-full">
 					<div
 						className="absolute inset-0 bg-gradient-to-b from-[#503880]/80 via-zinc-900/80 to-zinc-900 pointer-events-none"
