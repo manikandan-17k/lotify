@@ -31,11 +31,13 @@ export const useMusicStore = create<MusicStore>((set) => ({
         }
     },
     fetchAlbumById: async (id: number) => {
+        console.log("Fetching album with ID:", id);
         set({isLoading: true, error: null});
         try {
             const response = await api.get(`/albums/${id}`);
             set({songs: response.data.songs, currentAlbum: response.data});
         } catch (error:any) {
+            console.log("Error fetching album:", error);
             set({error: error.message, isLoading: false});
         }finally {
             set({isLoading: false});

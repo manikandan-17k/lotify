@@ -6,15 +6,15 @@ export interface Song{
     audioUrl: string;
     imageUrl: string;
     duration: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }
 
-export interface Album{
-    _id: string;
+export interface Album {
+    id: number;
     title: string;
     artist: string;
-    imageUrl: string;
-    releaseYear: number;
+    image_url: string;    
+    release_year: number; 
     songs: Song[];
 }

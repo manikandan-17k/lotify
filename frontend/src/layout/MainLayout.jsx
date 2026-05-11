@@ -5,6 +5,7 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import LeftSideBar from "./components/LeftSideBar";
+import FriendsActivity from "./components/FriendsActivity";
 
 const MainLayout = () => {
   return (
@@ -46,9 +47,7 @@ const MainLayout = () => {
             collapsible
             collapsedSize={0}
           >
-            <div className="h-full p-4 border-l border-zinc-800 overflow-y-auto">
-              <h1 className="text-2xl font-bold">Right Sidebar</h1>
-            </div>
+          <FriendsActivity/>
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>

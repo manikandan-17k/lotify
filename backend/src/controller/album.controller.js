@@ -17,18 +17,20 @@ export const getAllAlbums = async (req, res, next) => {
 
 export const getAlbumById = async (req, res, next) => {
   try {
-    const { albumId } = req.params;
-
+    const { id } = req.params;
+    const numericId = parseInt(id);
+    console.log("Received request for album ID:", numericId);
     const { data, error } = await db
       .from("albums")
       .select(`
         *,
         songs (*)
       `)
-      .eq("id", albumId)
+      .eq("id", numericId)
       .single();
 
     if (error) {
+       console.log("Supabase error:", error);
       return res.status(404).json({ message: "Album not found" });
     }
 

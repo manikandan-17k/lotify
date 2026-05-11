@@ -11,9 +11,6 @@ const LeftSideBar = () => {
   const {albums,isLoading,fetchAlbums} = useMusicStore();
   useEffect(() => {fetchAlbums();
   },[fetchAlbums]);
-  console.log("isLoading:", isLoading);
-console.log("albums:", albums);
-
   return (
     <div className="h-full flex flex-col gap-2">
         <div className="rounded-lg bg-zinc-900 p-4">
