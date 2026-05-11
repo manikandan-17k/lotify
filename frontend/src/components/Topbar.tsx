@@ -1,8 +1,11 @@
 import { SignOutButton, UserButton, useUser } from "@clerk/clerk-react";
 import SignInOAuthButtons from "./SignInOAuthButtons";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 const Topbar = () => {
-  const { isSignedIn } = useUser();
+  const {isAdmin} = useAuthStore();
+  console.log("isAdmin", isAdmin);
+ 
 
   return (
     <div className="flex items-center justify-between p-4 bg-zinc-900/75 backdrop-blur-md z-10">
@@ -15,7 +18,7 @@ const Topbar = () => {
 
       {/* RIGHT */}
       <div className="flex items-center gap-4">
-        {isSignedIn ? (
+        {isAdmin ? (
           <>
             <SignOutButton>
               <button className="text-white bg-red-500 px-3 py-1 rounded">
