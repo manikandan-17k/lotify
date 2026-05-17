@@ -153,4 +153,13 @@ export const Album = {
     if (albumError) throw new Error(albumError.message);
     return { success: true };
   },
+  // Count total albums
+async count() {
+  const { count, error } = await db
+    .from("albums")
+    .select("*", { count: "exact", head: true });
+
+  if (error) throw new Error(error.message);
+  return count;
+},
 };

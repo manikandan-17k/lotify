@@ -71,4 +71,27 @@ export const User = {
     if (error) throw new Error(error.message);
     return { success: true };
   },
+  // Get all users except the current logged-in user
+// replaces User.find({ clerkId: { $ne: currentUserId } })
+async getAllExcept(clerkId) {
+  if (!clerkId) throw new Error("clerkId is required");
+
+  const { data, error } = await db
+    .from("users")
+    .select("*")
+    .neq("clerk_id", clerkId)        // $ne → .neq()
+    .order("created_at", { ascending: false });
+
+  if (error) throw new Error(error.message);
+  return data;
+},
+// Count total users
+async count() {
+  const { count, error } = await db
+    .from("users")
+    .select("*", { count: "exact", head: true });
+
+  if (error) throw new Error(error.message);
+  return count;
+},
 };

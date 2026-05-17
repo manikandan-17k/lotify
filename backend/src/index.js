@@ -8,9 +8,9 @@ import statsRoutes from './routes/stats.route.js';
 import albumRoutes from './routes/album.route.js';
 import connectDB from './lib/db.js';
 import {clerkMiddleware} from "@clerk/express";
-import {fileUpload} from 'express-fileupload';
+import fileUpload from 'express-fileupload';
 import path from 'path';
-import { create } from 'domain';
+
 
 dotenv.config();
 const __dirname = path.resolve();

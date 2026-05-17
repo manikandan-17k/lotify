@@ -22,6 +22,16 @@ export const Song = {
     return data;
   },
 
+  // Get N random songs (replaces MongoDB $sample + $project)
+  async getRandomSongs(count = 6) {
+    if (count < 1) throw new Error("count must be at least 1");
+
+    const { data, error } = await db.rpc("get_random_songs", { row_count: count });
+
+    if (error) throw new Error(error.message);
+    return data;
+  },
+
   // Find a song by id
   async findById(id) {
     if (!id) throw new Error("Song id is required");
@@ -111,7 +121,6 @@ export const Song = {
       albumId: "album_id",
     };
 
-    // Build only the fields that were actually passed
     const payload = Object.entries(updates).reduce((acc, [key, value]) => {
       if (fieldMap[key] && value !== undefined) {
         acc[fieldMap[key]] = value;
@@ -119,7 +128,6 @@ export const Song = {
       return acc;
     }, {});
 
-    // Guard: nothing to update
     if (Object.keys(payload).length === 0) {
       throw new Error("No valid fields provided for update");
     }
@@ -156,4 +164,13 @@ export const Song = {
     if (error) throw new Error(error.message);
     return { success: true };
   },
+  // Count total songs
+async count() {
+  const { count, error } = await db
+    .from("songs")
+    .select("*", { count: "exact", head: true });
+
+  if (error) throw new Error(error.message);
+  return count;
+},
 };
