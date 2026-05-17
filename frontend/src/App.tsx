@@ -1,27 +1,16 @@
-import { useAuth, SignInButton, SignOutButton, UserButton } from '@clerk/react'
-import { Button } from './components/ui/button'
-import './App.css'
+import {Route,Routes} from 'react-router-dom';
+import HomePage from './pages/home/HomePage';
+import AuthCallbackPage from './pages/auth-callback/AuthCallbackPage';
+
+
 function App() {
-  const { isSignedIn } = useAuth()
-
-  return (
+    return (
     <>
-      <header>
-        {!isSignedIn ? (
-          <SignInButton>
-            <Button>Sign in</Button>
-          </SignInButton>
-        ) : (
-          <>
-            <UserButton />
-            <SignOutButton>
-              <Button>Sign out</Button>
-            </SignOutButton>
-          </>
-        )}
-      </header>
+      <Routes>
+        <Route path="/" element={<HomePage/>} />
+        <Route path="/auth-callback" element={<AuthCallbackPage/>} />
+      </Routes>
     </>
-  )
+  );
 }
-
-export default App
+export default App;
