@@ -6,7 +6,7 @@ export const getAllUsers = async (req, res, next) => {
     const currentUserId = req.auth.userId;
 
     // ✅ getAllExcept() replaces User.find({ clerkId: { $ne: currentUserId } })
-    const users = await User.getAllExcept(currentUserId);
+    const users = await User.findAll();// getAllExcept(currentUserId);
 
     res.status(200).json(users);
   } catch (error) {
