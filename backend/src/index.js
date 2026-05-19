@@ -33,7 +33,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/songs", songRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/stats", statsRoutes);
-app.use("/api/albums ", albumRoutes);
+app.use("/api/albums", albumRoutes);
 const PORT = process.env.PORT;
 connectDB();  
 app.use((err, req, res, next) => {
