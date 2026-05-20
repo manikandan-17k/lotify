@@ -22,7 +22,7 @@ const AuthProvider = ({children}: { children: React.ReactNode }) => {
                 const token = await getToken();
                 updateApiToken(token);
                 console.log("User ID:", userId);
-                if(token){
+                if(token && userId) {
                     await checkAdminStatus();
                 }
             } catch (error) {

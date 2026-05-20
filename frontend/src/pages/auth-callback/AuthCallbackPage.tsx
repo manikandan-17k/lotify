@@ -19,6 +19,7 @@ useEffect(() => {
         lastName: user.lastName,
         imageUrl: user.imageUrl
       }
+            
       );
 
     } catch (error) {

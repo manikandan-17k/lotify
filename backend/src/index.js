@@ -20,6 +20,7 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || "http://localhost:5173",
   credentials: true
 }));
+app.use(express.json());
 app.use(clerkMiddleware());
 app.use(fileUpload({
   useTempFiles: true,
@@ -27,7 +28,6 @@ app.use(fileUpload({
   createParentPath: true,
   limits: { fileSize: 10 * 1024 * 1024 }, // 50MB 
 }));
-app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/songs", songRoutes);

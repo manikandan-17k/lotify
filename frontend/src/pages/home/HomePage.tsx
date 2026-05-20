@@ -1,11 +1,9 @@
-import Topbar from "../../components/ui/Topbar";
-
 const HomePage = () => {
   return (
-    <div>
-      <Topbar />
+    <div className="h-full overflow-auto">
+      {/* your home page content here */}
     </div>
   );
-}   
+}
 
 export default HomePage;
