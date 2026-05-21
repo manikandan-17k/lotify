@@ -6,14 +6,14 @@ import {
 } from "@/components/ui/resizable";
 import LeftSidebar from "./components/LeftSidebar";
 import FriendsActivity from "./components/FriendsActivity";
-import Topbar from "@/components/ui/Topbar";
+
 
 const MainLayout = () => {
   const isMobile = false;
 
   return (
     <div className="h-screen bg-black text-white flex flex-col">
-      <Topbar />  {/* ✅ once, shared across all pages */}
+       {/* ✅ once, shared across all pages */}
 
       <div className="flex-1 min-h-0 p-2">
         <ResizablePanelGroup
