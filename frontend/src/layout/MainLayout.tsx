@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/resizable";
 import LeftSidebar from "./components/LeftSidebar";
 import FriendsActivity from "./components/FriendsActivity";
+import AudioPlayer from "./components/AudioPlayer";
 
 
 const MainLayout = () => {
@@ -16,10 +17,8 @@ const MainLayout = () => {
        {/* ✅ once, shared across all pages */}
 
       <div className="flex-1 min-h-0 p-2">
-        <ResizablePanelGroup
-             direction={"horizontal" as "horizontal" | "vertical"}
-          className="h-full w-full"
-        >
+        <ResizablePanelGroup className="h-full w-full" >
+          <AudioPlayer  />
           <ResizablePanel maxSize={30} minSize={isMobile ? 0 : 10} defaultSize={20}>
             <LeftSidebar />
           </ResizablePanel>
