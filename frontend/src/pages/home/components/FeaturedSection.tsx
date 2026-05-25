@@ -1,6 +1,7 @@
 
 import SectionGridSkeleton from "@/components/skeletons/SectionGridSkeleton";
 import { useMusicStore } from "@/stores/useMusicStore";
+import PlayButton from "./PlayButton";
 
 const FeaturedSection = () => {
     const { featuredSongs, featuredLoading,isLoading,error } = useMusicStore();
@@ -20,7 +21,9 @@ const FeaturedSection = () => {
                     <div className="text-sm font-semibold">{song.title}</div>
                     <div className="text-xs text-zinc-400">{song.artist}</div>
                 </div>
+                <PlayButton song={song} />
             </div>
+            
         ))}     
     </div>;
 };
