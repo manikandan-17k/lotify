@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import FeaturedSection from "./components/FeaturedSection";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import SectionGrid from "./components/SectionGrid";
+import { usePlayerStore } from "@/stores/usePlayerStore";
+
 
 
 const HomePage = () => {
@@ -19,15 +21,18 @@ const HomePage = () => {
     fetchMadeForYouSongs,
   } = useMusicStore();
 
+  const {initializeQueue} = usePlayerStore();
+
   useEffect(() => {
     fetchFeaturedSongs();
     fetchTrendingSongs();
     fetchMadeForYouSongs();
   }, [fetchFeaturedSongs, fetchTrendingSongs, fetchMadeForYouSongs]);
-  console.log("Loading States - Featured:", featuredLoading, "Trending:", trendingLoading, "Made For You:", madeForYouLoading);
-  console.log("Made For You Songs:", madeForYouSongs);
-  console.log("Trending Songs:", trendingSongs);
-  console.log("Featured Songs:", featuredSongs);
+  useEffect(() => {
+    if(madeForYouSongs.length > 0 && trendingSongs.length > 0 && featuredSongs.length > 0){
+      initializeQueue([...featuredSongs, ...trendingSongs, ...madeForYouSongs]);
+    }
+  }, [madeForYouSongs, trendingSongs, featuredSongs, initializeQueue]);
 
   return (
     <main className="rounded-md overflow-hidden h-full bg-gradient-to-b from-zinc-800 to-zinc-900">
@@ -40,9 +45,16 @@ const HomePage = () => {
           <FeaturedSection />
         </div>
         <div className="space-y-8">
-        <SectionGrid title = "madeForYouSongs" songs = {madeForYouSongs}/>
-        <SectionGrid title = "trendingSongs" songs={trendingSongs} />
-
+            <SectionGrid
+              title="Made For You"
+              songs={madeForYouSongs}
+              isLoading={madeForYouLoading}  // ✅ add
+            />
+            <SectionGrid
+              title="Trending"
+              songs={trendingSongs}
+              isLoading={trendingLoading}    // ✅ add
+            />
         </div>
       </ScrollArea>
     </main>
