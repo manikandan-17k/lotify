@@ -16,7 +16,7 @@ export interface Album {
     artist: string;
     release_date: string;
     image_url: string;
-    songs: Song[];
+    songs?: Song[];
 }
 export interface Stats{
     totalSongs: number;

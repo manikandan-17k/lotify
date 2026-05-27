@@ -3,7 +3,7 @@ import Header from "./components/Header";
 import DashboardStats from "./components/DashboardStats";
 import { Album, Music } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlbumsTabContent } from "./components/AlbumsTabContent";
+import AlbumsTabContent from "./components/AlbumsTabContent";
 import { SongsTabContent } from "./components/SongsTabContent";
 import { useEffect } from "react";
 import { useMusicStore } from "@/stores/useMusicStore";
