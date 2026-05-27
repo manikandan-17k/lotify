@@ -1,8 +1,27 @@
+import { Button } from "@/components/ui/button";
+import {Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Music } from "lucide-react";
+import SongsTable from "./SongsTable";
 export const SongsTabContent = () => {
     return (
-        <div>
-            <h3>Songs Management</h3>
-            <p>Here you can manage your songs, including adding new songs, editing existing ones, and deleting songs from your catalog.</p>
-        </div>
+        <Card>
+            <CardHeader>
+                <div className="flex items-center justify-between">
+                    <div>
+                        <CardTitle className="flex items-center gap-2">
+                            <Music className="size-5 text-emerald-500 "/>
+                            Songs Library
+                        </CardTitle>
+                        <CardDescription>
+                            Manage your music tracks
+                        </CardDescription>
+                    </div>
+                    <Button> + </Button>
+                </div>
+            </CardHeader>
+        <CardHeader>
+            <SongsTable />
+        </CardHeader>
+        </Card>
     );
 }       
