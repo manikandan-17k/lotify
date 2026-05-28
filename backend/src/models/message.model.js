@@ -2,17 +2,17 @@ import { db } from "../lib/db.js";
 
 export const Message = {
   // Create a new message
-  async create({ senderId, receiverId, content }) {
-    if (!senderId) throw new Error("senderId is required");
-    if (!receiverId) throw new Error("receiverId is required");
+  async create({ sender_id, receiver_id, content }) {
+    if (!sender_id) throw new Error("sender_id is required");
+    if (!receiver_id) throw new Error("receiver_id is required");
     if (!content?.trim()) throw new Error("content is required");
 
     const { data, error } = await db
       .from("messages")
       .insert([
         {
-          sender_id: senderId,
-          receiver_id: receiverId,
+          sender_id: sender_id,
+          receiver_id: receiver_id ,
           content: content.trim(),
         },
       ])

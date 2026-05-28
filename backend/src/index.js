@@ -38,6 +38,12 @@ app.use("/api/songs", songRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/stats", statsRoutes);
 app.use("/api/albums", albumRoutes);
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'public')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  });
+}
 const PORT = process.env.PORT;
 connectDB();  
 app.use((err, req, res, next) => {

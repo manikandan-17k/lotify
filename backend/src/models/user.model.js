@@ -2,10 +2,10 @@ import { db } from "../lib/db.js";
 
 export const User = {
   // Create a new user
-  async create({ fullName, imageUrl, clerkId }) {
+  async create({ full_name, image_url, clerk_id }) {
     const { data, error } = await db
       .from("users")
-      .insert([{ full_name: fullName, image_url: imageUrl, clerk_id: clerkId }])
+      .insert([{ full_name: full_name, image_url: image_url, clerk_id: clerk_id }])
       .select()
       .single();
 
@@ -46,12 +46,12 @@ export const User = {
 
   // Update a user by clerkId
   async updateByClerkId(clerkId, updates) {
-    const { fullName, imageUrl } = updates;
+    const { full_name, image_url } = updates;
     const { data, error } = await db
       .from("users")
       .update({
-        ...(fullName && { full_name: fullName }),
-        ...(imageUrl && { image_url: imageUrl }),
+        ...(full_name && { full_name: full_name }),
+        ...(image_url && { image_url: image_url }),
       })
       .eq("clerk_id", clerkId)
       .select()

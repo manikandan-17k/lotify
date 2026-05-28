@@ -25,7 +25,7 @@ const ChatPage = () => {
 	}, [fetchUsers, user]);
 
 	useEffect(() => {
-		if (selectedUser) fetchMessages(selectedUser.clerkId);
+		if (selectedUser) fetchMessages(selectedUser.clerk_id);
 	}, [selectedUser, fetchMessages]);
 
 	console.log({ messages });
@@ -50,27 +50,27 @@ const ChatPage = () => {
 										<div
 											key={message.id}
 											className={`flex items-start gap-3 ${
-												message.senderId === user?.id ? "flex-row-reverse" : ""
+												message.sender_id === user?.id ? "flex-row-reverse" : ""
 											}`}
 										>
 											<Avatar className='size-8'>
 												<AvatarImage
 													src={
-														message.senderId === user?.id
+														message.sender_id === user?.id
 															? user.imageUrl
-															: selectedUser.imageUrl
+															: selectedUser.image_url
 													}
 												/>
 											</Avatar>
 
 											<div
 												className={`rounded-lg p-3 max-w-[70%]
-													${message.senderId === user?.id ? "bg-green-500" : "bg-zinc-800"}
+													${message.sender_id === user?.id ? "bg-green-500" : "bg-zinc-800"}
 												`}
 											>
 												<p className='text-sm'>{message.content}</p>
 												<span className='text-xs text-zinc-300 mt-1 block'>
-													{formatTime(message.createdAt)}
+													{formatTime(message.created_at)}
 												</span>
 											</div>
 										</div>

@@ -28,16 +28,16 @@ export interface Stats {
 
 export interface Message {
   id: string;
-  senderId: string;
-  receiverId: string;
+  sender_id: string;
+  receiver_id: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface User {
   id: string;
-  clerkId: string;
-  fullName: string;
-  imageUrl: string;
+  clerk_id: string;
+  full_name: string;
+  image_url: string;
 }
