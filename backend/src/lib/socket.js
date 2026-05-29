@@ -13,7 +13,6 @@ export const initializeSocket = (server) => {
   const userActivities = new Map(); // { clerkId: activity }
 
   io.on("connection", (socket) => {
-    
     socket.on("user_connected", (userId) => {
       userSockets.set(userId, socket.id);
       userActivities.set(userId, "Idle");
@@ -28,34 +27,30 @@ export const initializeSocket = (server) => {
       io.emit("activity_updated", { userId, activity });
     });
 
-    // socket.js — send_message handler
-socket.on("send_message", async (data) => {
-  try {
-    const { senderId, receiverId, content } = data;
+    socket.on("send_message", async (data) => {
+      try {
+        const { senderId, receiverId, content } = data;
 
-    // ✅ camelCase — matches Message.create({ senderId, receiverId, content })
-    const message = await Message.create({
-      senderId,
-      receiverId,
-      content,
+        const message = await Message.create({
+          sender_id: senderId,     // ✅ fixed
+          receiver_id: receiverId, // ✅ fixed
+          content,
+        });
+
+        const receiverSocketId = userSockets.get(receiverId);
+        if (receiverSocketId) {
+          io.to(receiverSocketId).emit("receive_message", message);
+        }
+
+        socket.emit("message_sent", message);
+      } catch (error) {
+        console.error("Message error:", error);
+        socket.emit("message_error", error.message);
+      }
     });
-
-    const receiverSocketId = userSockets.get(receiverId);
-    if (receiverSocketId) {
-      io.to(receiverSocketId).emit("receive_message", message);
-    }
-
-    socket.emit("message_sent", message);
-
-  } catch (error) {
-    console.error("Message error:", error);
-    socket.emit("message_error", error.message);
-  }
-});
 
     socket.on("disconnect", () => {
       let disconnectedUserId;
-
       for (const [userId, socketId] of userSockets.entries()) {
         if (socketId === socket.id) {
           disconnectedUserId = userId;
@@ -67,7 +62,6 @@ socket.on("send_message", async (data) => {
 
       if (disconnectedUserId) {
         io.emit("user_disconnected", disconnectedUserId);
-        // ✅ Sync updated activities after disconnect
         io.emit("activities", Array.from(userActivities.entries()));
       }
     });
