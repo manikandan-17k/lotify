@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
     "type": "module",
+  
   "scripts": {
-    "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "seed:songs": "node src/seeds/songs.js",
-    "seed:albums": "node src/seeds/albums.js"
+    "build": "npm install --prefix backend && npm install --prefix frontend && npm run build --prefix frontend && cp -r frontend/dist ./public",
+    "start": "node backend/src/index.js"
   },
   "keywords": [],
   "author": "",
